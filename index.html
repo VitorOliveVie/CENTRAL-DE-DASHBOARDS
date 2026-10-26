@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Dashboards</title>
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Dashboards - CCO</title>
+    <!-- Favicon da aba do navegador -->
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA0oAAAEoCAMAAABRp/GnAAAC/VBMVEUAAAA6dL41bLwxabwubL8iXswrYbszecYcYeQmVr4bceYmXcQlc9QaV90cfecufs8lgPIlYuYrVbgnee0xgeMtlPQeU8ciVb83gMcyar8uhNYnV7shVc4ed+EqiOssi+kqbe0kiegrfNMsgNUwesokje8mbNkgWNUadeUaVuQfW9wnc+wkW9Afje4qheAcXuIcgOwjjOkleeAbd94XUtkoeNwfVc0si+Eob9Upa8sviN8jUb0iZeEfc+8ug9QWUdgAhv8Ae/0AVvcAfv8AXvgAhP4AaPwAdv8AT/UBd/0AYvoAVPUAUfUAWvkAb/0ASPMBUPMAS/IBa/wAbfwBh/0BWfcAVfYATfMAdf8Cg/wAZfsAZPoBdvkAUvcCTvUAhfwAgP8BavoBZ/oBf/wAefwBSfUAd/wAYPoAdP0CbvoBev8BcvcBgf0BSfEAg/8BTvIBT/ABcP8CgfoBU/MAYfgBif8BcfsATPABZvkAcf0BXPcARvIBdPwAef4AWPgBcv8BWPUCevoAgv8AfP4DhPkBXPUAff0BgP4Dh/kAc/wCXfoDRu0BX/IBUuwBUfkBUvABU/UAeP4BTPgBbvYDSe8BYfUBa/8DavcBc/8BV+8BZv0EX/YEVPgETfoBfvkATfYBRfACZPgBS/UBXPABTOwGdvsCfPYCdfMAhf8CSfgBe/8BYvwBVvIBbf8DgvYBVfsAXPkEQ+kBZfcHcPABUPcGavIBYf8Baf0CWPkIgfQDjP8CUf0GhvUCSeoCWvsCRPIBXvwFRfYHZfEJiv0BZ/8CW/8BZvUIb/YHeP8Hhv8JWvMIePYHevgHcfoFUOgMifcEfvEPhu4Nf+oGff8MU+4EVv8Nd+0FSeQGTP8HYuwKWuwTYuYKR9sLdPQCRfsAXvoTa+cMXf0NW+EDWOgNZfcMYPQMj/8BQO0Fgv8Mc+YJf/kIUN8PfvMbhucTUOIOU/ULZv4EaucLdP4XjPYPS+0NgP8PfeIRfPwUWu8OV9gRbNkMQ9ENbv0EQOEWcvVHZ64cAAAAQHRSTlMACAUOFmQfJuY64kZo2t8x17CDsqK5dFGGg2ksg9K8q6TOUEQ71qS2/fzK1pT9h/by7MD26pKjmnpbeV68/F365p6g5QAAVGBJARR0AA">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: #1E293B;
+            color: #fff;
+            font-family: "Segoe UI", Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin: 0 0 30px 0;
+            padding-top: 10px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Grid onde as caixas ficam alinhadas */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 25px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Estilo do card/caixa transformado em link global */
+        .card {
+            background-color: #0F172A;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #334155;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.6);
+            border-color: #38BDF8;
+        }
+
+        .card-header {
+            padding: 14px 18px;
+            background-color: #334155;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            letter-spacing: 0.5px;
+        }
+
+        .card-header span:last-child {
+            color: #38BDF8;
+            font-size: 0.85rem;
+            font-weight: normal;
+        }
+
+        .card:hover .card-header span:last-child {
+            text-decoration: underline;
+        }
+
+        /* Layout interno: Divide entre o preview e o resumo lado a lado */
+        .card-content-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 15px;
+            gap: 15px;
+        }
+
+        /* Container responsivo para manter a proporção do Power BI */
+        .iframe-container {
+            position: relative;
+            width: 50%;
+            padding-top: 28.125%; /* Proporção 16:9 ajustada para metade da largura */
+            background-color: #000;
+            border-radius: 6px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none; /* Permite que o clique passe para o link do card */
+        }
+
+        /* Camada invisível para garantir o clique em cima do iframe */
+        .iframe-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        /* Estilo para a área de resumo/tópicos */
+        .card-summary {
+            width: 50%;
+            font-size: 0.85rem;
+            color: #CBD5E1;
+        }
+
+        .card-summary ul {
+            margin: 0;
+            padding-left: 18px;
+            line-height: 1.5;
+        }
+
+        .card-summary li {
+            margin-bottom: 6px;
+        }
+
+        /* Ajuste para telas menores (responsividade) */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-content-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .iframe-container {
+                width: 100%;
+                padding-top: 56.25%; /* Volta para 16:9 em telas estreitas */
+            }
+            .card-summary {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="title">CENTRAL DE DASHBOARDS</h1>
+
+    <div class="dashboard-grid">
+        
+        <!-- 1. DASHBOARD CCO -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=09fcd23b-b383-4ff9-9180-f323a2e9aa93&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>DASHBOARD CCO</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=09fcd23b-b383-4ff9-9180-f323a2e9aa93&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Troca prematura;</li>
+                        <li>Relatórios (Estoques, ticket, posto fixo...);</li>
+                        <li>Diagnósticos;</li>
+                        <li>Parque de equipamentos;</li>
+                        <li>Telas monitores.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 2. DASHBOARD CHAMADOS -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=8a9854bf-308a-4a3a-91c3-67b89319165a&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>DASHBOARD CHAMADOS</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=8a9854bf-308a-4a3a-91c3-67b89319165a&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Acompanhamento dos chamados SDM;</li>
+                        <li>Produtivo;</li>
+                        <li>Monitoramento (Chamados SDM);</li>
+                        <li>Tela monitores.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 3. INSTALAÇÕES (IMPL. E DESMOB.) -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=7566439d-0d69-446b-b953-a54115356c8e&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>INSTALAÇÕES (IMPL. E DESMOB.)</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=7566439d-0d69-446b-b953-a54115356c8e&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Equipamentos Implantados e Desmobilizados;</li>
+                        <li>Equipamentos implantados sem comunicação;</li>
+                        <li>Tela monitores.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 4. REPORT COMPRAS DE PAPEL -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=da3833d9-e650-4bc7-9b95-c99857f26ec0&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>REPORT COMPRAS DE PAPEL</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=da3833d9-e650-4bc7-9b95-c99857f26ec0&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Acompanhamento das remessas de papel em atraso (normal e urgente);</li>
+                        <li>KPI's de dias em atraso;</li>
+                        <li>Comparativo das quantidades por dia.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 5. DASHBOARD FINANCEIRO -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=40221e77-38a3-444a-bf02-cefc80a9c6ea&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>DASHBOARD FINANCEIRO</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=40221e77-38a3-444a-bf02-cefc80a9c6ea&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Valores de emissão, planejado, faturado (MI, PI) e etc;</li>
+                        <li>Insumos enviados e quantidades;</li>
+                        <li>Relatórios (Faturamento global...);</li>
+                        <li>Prévia de contratos (CAIXA).</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 6. DASHBOARD DISPONIBILIDADE -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=f2bc3a3b-4959-438c-bd3c-0ee163cb5fa9&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>DASHBOARD DISPONIBILIDADE</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=f2bc3a3b-4959-438c-bd3c-0ee163cb5fa9&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Disponibilidade das impressoras por mês (faturamento).</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 7. CTRC DE REMESSAS GPRINT (STATUS CTRC) -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=84dfa41f-b184-4c6e-8e4c-5ee73be61b65&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>CTRC DE REMESSAS GPRINT</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=84dfa41f-b184-4c6e-8e4c-5ee73be61b65&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Acompanhamento da disponibilidade dos CTRCs das remessas de papel.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 8. DASHBOARD DASA (CLIENTE DASA) -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=f3b5aa9b-86ae-40ac-bebd-fbb286a28493&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>DASHBOARD DASA</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=f3b5aa9b-86ae-40ac-bebd-fbb286a28493&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Acompanhamento dos equipamentos sem bilhetagem para o cliente DASA.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 9. DASHBOARD COPASA (CLIENTE COPASA) -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=bba9b9ca-61ca-4743-86ae-9212a0a3dd74&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>DASHBOARD COPASA</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=bba9b9ca-61ca-4743-86ae-9212a0a3dd74&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Acompanhamento dos equipamentos sem bilhetagem para o cliente COPASA.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 10. SITUAÇÃO IMOBILIZADO -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=26d6cd01-df02-4788-9c3a-98940e147812&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>SITUAÇÃO IMOBILIZADO</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=26d6cd01-df02-4788-9c3a-98940e147812&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Situação dos equipamentos imobilizados;</li>
+                        <li>Equipamentos imobilizados não operacionais.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 11. DASHBOARD RELATÓRIOS -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=da3833d9-e650-4bc7-9b95-c99857f26ec0&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>DASHBOARD RELATÓRIOS</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=da3833d9-e650-4bc7-9b95-c99857f26ec0&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Detalhamento do envio de insumos.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 12. COLETA DE CONTADORES (APP) -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=4a2cae51-5c18-463a-8ddc-585538ef40d4&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>COLETA DE CONTADORES (APP)</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=4a2cae51-5c18-463a-8ddc-585538ef40d4&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Acompanhamento dos contadores inseridos via app.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+        <!-- 13. REMESSAS PENDENTES (STATUS REMESSAS) -->
+        <a href="https://app.powerbi.com/reportEmbed?reportId=10f09911-3d4b-49f8-959e-6ad6a5c9e0de&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" target="_blank" class="card">
+            <div class="card-header">
+                <span>REMESSAS PENDENTES</span>
+                <span>Abrir Dash ↗</span>
+            </div>
+            <div class="card-content-wrapper">
+                <div class="iframe-container">
+                    <div class="iframe-overlay"></div>
+                    <iframe src="https://app.powerbi.com/reportEmbed?reportId=10f09911-3d4b-49f8-959e-6ad6a5c9e0de&autoAuth=true&ctid=f149d0bc-0eb5-4f9a-9e82-24a76eacf8de&navContentPaneEnabled=false&pageView=fitToPage" allowFullScreen="true"></iframe>
+                </div>
+                <div class="card-summary">
+                    <ul>
+                        <li>Remessas em atraso por tipo de insumo.</li>
+                    </ul>
+                </div>
+            </div>
+        </a>
+
+    </div>
+
+</body>
+</html>
